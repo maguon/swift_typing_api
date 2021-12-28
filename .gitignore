@@ -14,8 +14,9 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-
-.vscode/*
+# System and IDE folder
+vscode/
+.DS_Store
 
 # Project log
 *.log
