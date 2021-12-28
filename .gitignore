@@ -22,12 +22,12 @@
 *.log.*
 
 # Project docs
-./docs/*
+docs
 
 # Air local config
 .air.toml
-./tmp/*
+tmp
 
 # System config file
 
-./conf/config.yaml
+config.yaml

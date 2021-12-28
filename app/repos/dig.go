@@ -1,0 +1,13 @@
+package repos
+
+import (
+	"go.uber.org/dig"
+)
+
+// Inject repositories
+func Inject(container *dig.Container) error {
+	_ = container.Provide(NewAppRepo)
+	_ = container.Provide(NewAuthRepo)
+	_ = container.Provide(NewUserRepo)
+	return nil
+}

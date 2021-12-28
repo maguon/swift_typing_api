@@ -1,0 +1,25 @@
+env: production
+default_limit: 25
+max_limit: 100
+
+log: 
+  log_level: 5
+  log_count: 7
+  log_path: ./
+  log_name: app.log
+
+database:
+  host: 127.0.0.1
+  port: 5432
+  name: ec_db
+  env: native
+  user: user_user
+  password: user_password
+  sslmode: disable
+
+redis:
+  enable: true
+  host: 127.0.0.1
+  port: 6379
+  password:
+  database: 0
