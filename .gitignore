@@ -13,3 +13,21 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+
+.vscode/*
+
+# Project log
+*.log
+*.log.*
+
+# Project docs
+./docs/*
+
+# Air local config
+.air.toml
+./tmp/*
+
+# System config file
+
+./conf/config.yaml
