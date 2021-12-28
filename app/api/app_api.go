@@ -22,7 +22,7 @@ func NewAppAPI(repo repos.IAppRepo) *AppApi {
 // @Summary Get App List
 // @Schemes
 // @Description GetAppInfo
-// @Tags app
+// @Tags App
 // @Accept json
 // @Param appId query int false "App ID"
 // @Param appType query int false "App Type"
@@ -51,7 +51,7 @@ func (appApi *AppApi) GetAppInfo(c *gin.Context) {
 // @Summary add app info
 // @Schemes
 // @Description AddApp
-// @Tags app
+// @Tags App
 // @Accept json
 // @Param appinfo body models.AppInfo true  "app info "
 // @Produce json
@@ -79,7 +79,7 @@ func (appApi *AppApi) AddApp(c *gin.Context) {
 // @Summary update app info
 // @Schemes
 // @Description UpdateApp
-// @Tags app
+// @Tags App
 // @Accept json
 // @Param appId path int true "App ID"
 // @Param appinfo body models.AppInfo true  "app info "

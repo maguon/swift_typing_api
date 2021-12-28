@@ -21,8 +21,8 @@ type AppInfo struct {
 	AppType       int
 	DeviceType    int
 	Version       string
-	VersionNum    string
-	MinVersionNum string
+	VersionNum    int
+	MinVersionNum int
 	ForceUpdate   int
 	Status        int
 	Url           string
@@ -33,8 +33,8 @@ type AppInfoOut struct {
 	AppType       int
 	DeviceType    int
 	Version       string
-	VersionNum    string
-	MinVersionNum string
+	VersionNum    int
+	MinVersionNum int
 	ForceUpdate   int
 	Status        int
 	Url           string

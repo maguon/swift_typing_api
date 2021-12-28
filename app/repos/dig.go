@@ -8,6 +8,7 @@ import (
 func Inject(container *dig.Container) error {
 	_ = container.Provide(NewAppRepo)
 	_ = container.Provide(NewAuthRepo)
+	_ = container.Provide(NewUserDeviceRepo)
 	_ = container.Provide(NewUserRepo)
 	return nil
 }

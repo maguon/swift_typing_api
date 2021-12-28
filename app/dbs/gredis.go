@@ -20,6 +20,7 @@ var ctx = context.Background()
 type IRedis interface {
 	IsConnected() bool
 	Get(key string, data interface{}) error
+	Expire(key string) error
 	Set(key string, val []byte) error
 	Remove(keys ...string) error
 	Keys(pattern string) ([]string, error)
@@ -79,6 +80,14 @@ func (g *GRedis) Get(key string, data interface{}) error {
 		return err
 	}
 
+	return nil
+}
+func (g *GRedis) Expire(key string) error {
+	err := g.client.Expire(ctx, key, time.Duration(g.expiryTime)*time.Second).Err()
+	if err != nil {
+		common.GetLogger().Info("Cache fail to expire: ", err)
+		return err
+	}
 	return nil
 }
 

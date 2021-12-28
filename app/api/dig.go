@@ -7,6 +7,7 @@ import (
 // Inject apis
 func Inject(container *dig.Container) error {
 	_ = container.Provide(NewAppAPI)
+	_ = container.Provide(NewUserDeviceAPI)
 	_ = container.Provide(NewUserAPI)
 	return nil
 }

@@ -10,8 +10,10 @@ import (
 
 func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 	err := container.Invoke(func(
-		userAPI *api.UserApi,
+
 		appAPI *api.AppApi,
+		userAPI *api.UserApi,
+		userDeviceAPI *api.UserDeviceApi,
 	) error {
 		authPath := r.Group("/auth")
 		{
@@ -28,6 +30,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		openPath := r.Group("/open")
 		{
 			openPath.POST("/register", userAPI.AddUser)
+			openPath.POST("/userDevice", userDeviceAPI.AddUserDevice)
 			openPath.POST("/login", userAPI.Login)
 			openPath.GET("/app", appAPI.GetAppInfo)
 			/* openPath.GET("/users/:id", func(c *gin.Context) {
@@ -40,6 +43,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		{
 			adminPath.POST("/app", appAPI.AddApp)
 			adminPath.PUT("/app/:appId", appAPI.UpdateApp)
+			adminPath.GET("/userDevice", userDeviceAPI.GetUserDevice)
 		}
 		return nil
 	})

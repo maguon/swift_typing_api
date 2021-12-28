@@ -34,6 +34,8 @@ func (authRepo *AuthRepo) Set(key string, authInfo *models.AuthInfo) error {
 
 func (authRepo *AuthRepo) Get(key string, authInfo *models.AuthInfo) error {
 	err := authRepo.gredis.Get(key, &authInfo)
+	authRepo.gredis.Expire(key)
+
 	return err
 }
 

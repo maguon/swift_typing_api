@@ -4,8 +4,8 @@ import "time"
 
 type UserInfo struct {
 	UserId   int    `json:"id" gorm:"primaryKey;column:id"`
-	Username string `json:"user_name" gorm:"column:user_name"`
-	RealName string `json:"real_name" gorm:"column:real_name"`
+	Username string `gorm:"column:user_name"`
+	RealName string `gorm:"column:real_name"`
 	Password string `json:"password" `
 	Phone    string `json:"phone" `
 	Gender   int    `json:"gender" `

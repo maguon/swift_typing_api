@@ -26,7 +26,7 @@ func NewUserAPI(repo repos.IUserRepo, auth repos.IAuthRepo) *UserApi {
 // @Summary  user register
 // @Schemes
 // @Description AddUser
-// @Tags user
+// @Tags User
 // @Accept json
 // @Param userinfo body models.UserInfo true  "user info "
 // @Produce json
@@ -60,7 +60,7 @@ func (userApi *UserApi) AddUser(c *gin.Context) {
 // @Summary  user login
 // @Schemes
 // @Description userLogin
-// @Tags user
+// @Tags User
 // @Accept json
 // @Param userinfo body models.Login true  "user info "
 // @Produce json
@@ -121,7 +121,7 @@ func (userApi *UserApi) Login(c *gin.Context) {
 // @Summary  user logout
 // @Schemes
 // @Description userLogout
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Success 200 {json} models.AccessToken
@@ -148,7 +148,7 @@ func (userApi *UserApi) Logout(c *gin.Context) {
 // @Summary Get User List
 // @Schemes
 // @Description GetUserInfo
-// @Tags user
+// @Tags User
 // @Accept json
 // @Param userId query int false "User ID"
 // @Param gender query int false "user gender"
@@ -178,7 +178,7 @@ func (userApi *UserApi) GetUserInfo(c *gin.Context) {
 // @Summary  user register
 // @Schemes
 // @Description AddUser
-// @Tags user
+// @Tags User
 // @Accept json
 // @Param userId path int true "user ID"
 // @Param userinfo body models.UserInfo true  "user info "
@@ -206,7 +206,7 @@ func (userApi *UserApi) UpdateUser(c *gin.Context) {
 // @Summary  user change access token
 // @Schemes
 // @Description ChangeToken
-// @Tags user
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param userId path int true "user ID"
