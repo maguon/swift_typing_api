@@ -19,6 +19,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		{
 			authPath.GET("/user", userAPI.GetUserInfo)
 			authPath.PUT("/user/:userId", userAPI.UpdateUser)
+			authPath.PUT("/user/:userId/password", userAPI.ChangPassword)
 			authPath.PUT("/user/:userId/token", userAPI.ChangeToken)
 			authPath.POST("/logout", userAPI.Logout)
 			/* authPath.GET("/users/:id", func(c *gin.Context) {

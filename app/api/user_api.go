@@ -118,6 +118,64 @@ func (userApi *UserApi) Login(c *gin.Context) {
 }
 
 // @BasePath /auth
+// @Summary  user change password
+// @Schemes
+// @Description userChangePassword
+// @Tags User
+// @Accept json
+// @Param userId path int true "user ID"
+// @Param userinfo body models.UserPassword true  "user password info "
+// @Produce json
+// @Success 200 {json} models.AccessToken
+// @Router /auth/user/{userId}/password [put]
+func (userApi *UserApi) ChangPassword(c *gin.Context) {
+	var passwordInfo models.UserPassword
+	if err := c.ShouldBindJSON(&passwordInfo); err != nil {
+		common.GetLogger().Error(err)
+		util.InvalidParamsReponse(c)
+		return
+	}
+	paramsMap := make(map[string]interface{})
+	userId, _ := strconv.Atoi(c.Param("userId"))
+	paramsMap["userId"] = userId
+	userInfoArray, err := userApi.repo.GetUserFullInfo(paramsMap)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+	if userInfoArray == nil || len(*userInfoArray) == 0 {
+		common.GetLogger().Warn("user not exist")
+		util.FailedResponse(c, "user not register", nil)
+	} else {
+		originPassword := fmt.Sprintf("%x", md5.Sum([]byte(passwordInfo.Password)))
+		originPassword = strings.ToUpper(originPassword)
+		if originPassword == (*userInfoArray)[0].Password {
+			newPassword := fmt.Sprintf("%x", md5.Sum([]byte(passwordInfo.NewPassword)))
+			newPassword = strings.ToUpper(newPassword)
+			userInfoTemp := models.UserInfo{
+				Password: newPassword,
+				UserId:   userId,
+			}
+			rowsAffected, err := userApi.repo.Update(&userInfoTemp)
+			if err != nil {
+				common.GetLogger().Error(err)
+				util.InternalServerResponse(c)
+				return
+			}
+			common.GetLogger().Info("change password success", (*userInfoArray)[0].UserId)
+			util.SuccessUpdateResponse(c, rowsAffected)
+
+		} else {
+			common.GetLogger().Warn("change password failed by invalid password %s", (*userInfoArray)[0].Phone)
+			util.FailedResponse(c, "change password by invalid password ", nil)
+		}
+
+	}
+
+}
+
+// @BasePath /auth
 // @Summary  user logout
 // @Schemes
 // @Description userLogout
@@ -192,6 +250,9 @@ func (userApi *UserApi) UpdateUser(c *gin.Context) {
 		util.InvalidParamsReponse(c)
 		return
 	}
+	userInfo.Password = ""
+	userInfo.Phone = ""
+	userInfo.Username = ""
 	userInfo.UserId, _ = strconv.Atoi(c.Param("userId"))
 	rowsAffected, err := userApi.repo.Update(&userInfo)
 	if err != nil {

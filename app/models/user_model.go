@@ -4,7 +4,7 @@ import "time"
 
 type UserInfo struct {
 	UserId   int    `json:"id" gorm:"primaryKey;column:id"`
-	Username string `gorm:"column:user_name"`
+	Username string ` gorm:"column:user_name"`
 	RealName string `gorm:"column:real_name"`
 	Password string `json:"password" `
 	Phone    string `json:"phone" `
@@ -46,4 +46,9 @@ type UserToken struct {
 type Login struct {
 	Username string `json:"username" `
 	Password string `json:"password" `
+}
+
+type UserPassword struct {
+	Password    string
+	NewPassword string
 }
