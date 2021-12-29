@@ -99,3 +99,39 @@ COMMENT ON COLUMN public.user_device_info.app_version_num IS '版本序号';
 COMMENT ON COLUMN public.user_device_info.remarks IS '备注';
 
 create trigger user_device_info_upt before update on user_device_info for each row execute procedure update_timestamp_func();
+
+--CREATE TABLE t_word
+CREATE TABLE IF NOT EXISTS public.t_word
+(
+    id bigserial NOT NULL,
+    created_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    status smallint NOT NULL DEFAULT 1,
+    word character varying(20) NOT NULL,
+    spell character varying(60) NOT NULL,
+    explain character varying(300) ,
+    example character varying(300) ,
+    refere character varying(100) ,
+    level smallint NOT NULL DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
+create trigger t_word_upt before update on t_word for each row execute procedure update_timestamp_func();
+
+
+
+--CREATE TABLE t_word
+CREATE TABLE IF NOT EXISTS public.t_poem
+(
+    id bigserial NOT NULL,
+    created_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    status smallint NOT NULL DEFAULT 1,
+    author character varying(20) NOT NULL,
+    title character varying(60) NOT NULL,
+    content character varying(300) ,
+    level smallint NOT NULL DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
+create trigger t_poem_upt before update on t_poem for each row execute procedure update_timestamp_func();

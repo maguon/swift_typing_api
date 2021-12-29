@@ -8,6 +8,7 @@ type TWordInfo struct {
 	Spell   string
 	Explain string
 	Example string
+	Refere  string
 	Level   int
 	Status  int
 }
@@ -17,6 +18,7 @@ type TWordInfoOut struct {
 	Spell     string
 	Explain   string
 	Example   string
+	Refere    string
 	Level     int
 	Status    int
 	CreatedOn time.Time

@@ -40,7 +40,7 @@ func (twordRepo *TWordRepo) GetTWord(tworddQuery *models.TWordQuery) (*[]models.
 		queryParamArray = append(queryParamArray, tworddQuery.Status)
 	}
 
-	query += " order by id desc "
+	query += " order by random() "
 
 	if tworddQuery.Start >= 0 && tworddQuery.Size > 0 {
 		query += "offset ?  limit ? "
