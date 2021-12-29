@@ -3,7 +3,6 @@ package repos
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"swift_typing_api/app/dbs"
 	"swift_typing_api/app/models"
 )
@@ -26,7 +25,7 @@ func NewAuthRepo(gredis dbs.IRedis) IAuthRepo {
 }
 
 func (authRepo *AuthRepo) Set(key string, authInfo *models.AuthInfo) error {
-	key = strconv.Itoa(authInfo.UserId) + prefix + key
+	//key = strconv.Itoa(authInfo.UserId) + prefix + key
 	authInfoBytes, _ := json.Marshal(authInfo)
 	err := authRepo.gredis.Set(key, authInfoBytes)
 	return err
@@ -45,7 +44,7 @@ func (authRepo *AuthRepo) Remove(key ...string) error {
 }
 
 func (authRepo *AuthRepo) GetKeys(keyStart string, keyEnd string) ([]string, error) {
-	key := fmt.Sprintf("*%s%s%s*", keyStart, prefix, keyEnd)
+	key := fmt.Sprintf("*%s%s*", keyStart, keyEnd)
 	keys, err := authRepo.gredis.Keys(key)
 	return keys, err
 }

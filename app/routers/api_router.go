@@ -2,6 +2,7 @@ package routers
 
 import (
 	"swift_typing_api/app/api"
+	"swift_typing_api/app/repos"
 	"swift_typing_api/common"
 
 	"github.com/gin-gonic/gin"
@@ -14,9 +15,12 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		appAPI *api.AppApi,
 		userAPI *api.UserApi,
 		userDeviceAPI *api.UserDeviceApi,
+		authRepo repos.IAuthRepo,
 	) error {
+
 		authPath := r.Group("/auth")
 		{
+			//authPath.Use(middle.ValidateUserToken(authRepo)) //validToken middleware
 			authPath.GET("/user", userAPI.GetUserInfo)
 			authPath.PUT("/user/:userId", userAPI.UpdateUser)
 			authPath.PUT("/user/:userId/password", userAPI.ChangPassword)

@@ -56,6 +56,7 @@ func (appApi *AppApi) GetAppInfo(c *gin.Context) {
 // @Param appinfo body models.AppInfo true  "app info "
 // @Produce json
 // @Success 200 {json} int
+// @Security ApiKeyAuth
 // @Router /admin/app [post]
 func (appApi *AppApi) AddApp(c *gin.Context) {
 	var appInfo models.AppInfo
@@ -85,6 +86,7 @@ func (appApi *AppApi) AddApp(c *gin.Context) {
 // @Param appinfo body models.AppInfo true  "app info "
 // @Produce json
 // @Success 200 {json} int
+// @Security ApiKeyAuth
 // @Router /admin/app/{appId} [put]
 func (appApi *AppApi) UpdateApp(c *gin.Context) {
 	var appInfo models.AppInfo

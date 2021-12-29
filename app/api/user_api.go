@@ -127,6 +127,7 @@ func (userApi *UserApi) Login(c *gin.Context) {
 // @Param userinfo body models.UserPassword true  "user password info "
 // @Produce json
 // @Success 200 {json} models.AccessToken
+// @Security ApiKeyAuth
 // @Router /auth/user/{userId}/password [put]
 func (userApi *UserApi) ChangPassword(c *gin.Context) {
 	var passwordInfo models.UserPassword
@@ -217,10 +218,13 @@ func (userApi *UserApi) Logout(c *gin.Context) {
 // @Param size query int false "Limit"
 // @Produce json
 // @Success 200 {string} models.AppInfo
+// @Security ApiKeyAuth
 // @Router /auth/user [get]
 func (userApi *UserApi) GetUserInfo(c *gin.Context) {
 	var userQuery models.UserQuery
-
+	//get validate token in request context
+	userId, _ := c.Get("_userId")
+	fmt.Println("_userId ", userId)
 	c.ShouldBindQuery(&userQuery)
 	common.GetLogger().Info(userQuery)
 	userOutList, err := userApi.repo.GetUser(&userQuery)
@@ -242,6 +246,7 @@ func (userApi *UserApi) GetUserInfo(c *gin.Context) {
 // @Param userinfo body models.UserInfo true  "user info "
 // @Produce json
 // @Success 200 {json} int
+// @Security ApiKeyAuth
 // @Router /auth/user/{userId} [put]
 func (userApi *UserApi) UpdateUser(c *gin.Context) {
 	var userInfo models.UserInfo
@@ -295,8 +300,8 @@ func (userApi *UserApi) ChangeToken(c *gin.Context) {
 			fmt.Println(userInfoList)
 			if userInfoList != nil && len(*userInfoList) > 0 && (*userInfoList)[0].Status == 1 {
 				newTokenString, _ := util.GenerateAccess(userIdInt)
-				keys, _ := userApi.auth.GetKeys(userId, "")
-				userApi.auth.Remove(keys...)
+				//keys, _ := userApi.auth.GetKeys(userId, "")
+				userApi.auth.Remove(accessToken...)
 				userApi.auth.Set(newTokenString, &models.AuthInfo{
 					UserId:   (*userInfoList)[0].UserId,
 					UserType: (*userInfoList)[0].Type,

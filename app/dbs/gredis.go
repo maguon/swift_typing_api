@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	RedisExpiredTimes = 600
+	RedisExpiredTimes = 7200
 )
 
 var ctx = context.Background()
