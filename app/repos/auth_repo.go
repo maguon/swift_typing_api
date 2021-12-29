@@ -7,7 +7,7 @@ import (
 	"swift_typing_api/app/models"
 )
 
-const prefix = "_U_"
+//const prefix = "_U_"
 
 type IAuthRepo interface {
 	Set(key string, authInfo *models.AuthInfo) error

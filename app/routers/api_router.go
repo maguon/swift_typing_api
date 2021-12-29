@@ -13,6 +13,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 	err := container.Invoke(func(
 
 		appAPI *api.AppApi,
+		tAllAPI *api.TAllApi,
 		userAPI *api.UserApi,
 		userDeviceAPI *api.UserDeviceApi,
 		authRepo repos.IAuthRepo,
@@ -38,6 +39,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 			openPath.POST("/userDevice", userDeviceAPI.AddUserDevice)
 			openPath.POST("/login", userAPI.Login)
 			openPath.GET("/app", appAPI.GetAppInfo)
+			openPath.GET("/poem", tAllAPI.GetTPoemInfo)
+			openPath.GET("/word", tAllAPI.GetTWordInfo)
 			/* openPath.GET("/users/:id", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "pong",
@@ -47,6 +50,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		adminPath := r.Group("/admin")
 		{
 			adminPath.POST("/app", appAPI.AddApp)
+			adminPath.POST("/poem", tAllAPI.AddTPoem)
+			adminPath.POST("/word", tAllAPI.AddTWord)
 			adminPath.PUT("/app/:appId", appAPI.UpdateApp)
 			adminPath.GET("/userDevice", userDeviceAPI.GetUserDevice)
 		}
