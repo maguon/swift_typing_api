@@ -38,9 +38,9 @@ type UserQuery struct {
 	Size     int    `json:"size" form:"size,default=-1"`
 }
 type UserToken struct {
-	UserId      int    `json:"id"`
-	UserType    int    `json:"user_type"`
-	AccessToken string `json:"access_token"`
+	UserId      int
+	UserType    int
+	AccessToken string
 }
 
 type Login struct {
