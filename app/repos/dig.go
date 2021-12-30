@@ -12,5 +12,6 @@ func Inject(container *dig.Container) error {
 	_ = container.Provide(NewUserRepo)
 	_ = container.Provide(NewTPoemRepo)
 	_ = container.Provide(NewTWordRepo)
+	_ = container.Provide(NewTScoreRepo)
 	return nil
 }

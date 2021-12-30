@@ -27,6 +27,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 			authPath.PUT("/user/:userId/password", userAPI.ChangPassword)
 			authPath.PUT("/user/:userId/token", userAPI.ChangeToken)
 			authPath.POST("/logout", userAPI.Logout)
+			authPath.POST("/score", tAllAPI.SaveTScore)
+			authPath.GET("/user/:userId/scoreRank", tAllAPI.GetUserScoreRank)
 			/* authPath.GET("/users/:id", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "pong",
@@ -41,6 +43,7 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 			openPath.GET("/app", appAPI.GetAppInfo)
 			openPath.GET("/poem", tAllAPI.GetTPoemInfo)
 			openPath.GET("/word", tAllAPI.GetTWordInfo)
+			openPath.GET("/score", tAllAPI.GetTScoreInfo)
 			/* openPath.GET("/users/:id", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "pong",

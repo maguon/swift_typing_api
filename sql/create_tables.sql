@@ -135,3 +135,21 @@ CREATE TABLE IF NOT EXISTS public.t_poem
 );
 
 create trigger t_poem_upt before update on t_poem for each row execute procedure update_timestamp_func();
+
+--CREATE TABLE t_score
+CREATE TABLE IF NOT EXISTS public.t_score
+(
+    id bigserial NOT NULL,
+    created_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    status smallint NOT NULL DEFAULT 1,
+    user_id bigint NOT NULL,
+    corrent int NOT NULL DEFAULT 0,
+    incorrect int NOT NULL DEFAULT 0,
+    score decimal(12,2) NOT NULL DEFAULT 0,
+    score_type smallint NOT NULL DEFAULT 1,
+    level smallint NOT NULL DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
+create trigger t_score_upt before update on t_score for each row execute procedure update_timestamp_func();
