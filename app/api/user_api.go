@@ -100,8 +100,8 @@ func (userApi *UserApi) Login(c *gin.Context) {
 				Status:   (*userInfoArray)[0].Status,
 			}
 			//remove access token from redis
-			keys, _ := userApi.auth.GetKeys(strconv.Itoa((*userInfoArray)[0].UserId), "")
-			userApi.auth.Remove(keys...)
+			//keys, _ := userApi.auth.GetKeys(strconv.Itoa((*userInfoArray)[0].UserId), "")
+			//userApi.auth.Remove(keys...)
 			err := userApi.auth.Set(accessToken, &authInfo)
 			if err != nil {
 				common.GetLogger().Error(err)
