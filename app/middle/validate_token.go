@@ -18,7 +18,7 @@ func ValidateUserToken(authRepo repos.IAuthRepo) gin.HandlerFunc {
 			c.Abort()
 			return
 		} else {
-			c.Set("_userId", authInfo.UserId)
+			c.Set("_user_id", authInfo.UserId)
 			c.Next()
 		}
 

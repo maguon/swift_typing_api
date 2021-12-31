@@ -3,22 +3,17 @@ package models
 import "time"
 
 type TPoemInfo struct {
-	Id      int `gorm:"primaryKey;column:id"`
-	Title   string
-	Author  string
-	Content string
-	Level   int
-	Status  int
+	Id      int    `json:"id"  gorm:"primaryKey;column:id"`
+	Title   string `json:"title" `
+	Author  string `json:"author" `
+	Content string `json:"content" `
+	Level   int    `json:"level" `
+	Status  int    `json:"status" `
 }
 type TPoemInfoOut struct {
-	Id        int `gorm:"primaryKey;column:id"`
-	Title     string
-	Author    string
-	Content   string
-	Level     int
-	Status    int
-	CreatedOn time.Time
-	UpdatedOn time.Time
+	TPoemInfo
+	CreatedOn time.Time `json:"createdOn" `
+	UpdatedOn time.Time `json:"updatedOn" `
 }
 type TPoemQuery struct {
 	Id     int `json:"id" gorm:"primaryKey;column:id"`

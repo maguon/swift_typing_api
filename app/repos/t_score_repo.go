@@ -25,7 +25,7 @@ func (tScoreRepo *TScoreRepo) SaveTScore(tScoreInfo *models.TScoreInfo) (int, er
 }
 
 func (tScoreRepo *TScoreRepo) UpdateTScore(scoreInfo map[string]interface{}) (*models.TScoreInfoOut, error) {
-	query := "update t_score set score = ? where id = ? "
+	query := "update t_score set score = ? where id = ? RETURNING id "
 	queryParamArray := []interface{}{}
 	queryParamArray = append(queryParamArray, scoreInfo["score"])
 	queryParamArray = append(queryParamArray, scoreInfo["id"])

@@ -8,6 +8,7 @@ import (
 type IUserDeviceRepo interface {
 	AddUserDevice(appInfo *models.UserDevice) (int, error)
 	GetUserDevice(appQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error)
+	UpdateUserDeviceStatus(userDeviceQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error)
 }
 
 type UserDeviceRepo struct {
@@ -21,6 +22,28 @@ func NewUserDeviceRepo(db dbs.IDatabase) IUserDeviceRepo {
 func (userDeviceRepo *UserDeviceRepo) AddUserDevice(userDeviceInfo *models.UserDevice) (int, error) {
 	result := userDeviceRepo.db.GetInstance().Table("user_device_info").Create(&userDeviceInfo)
 	return userDeviceInfo.Id, result.Error
+}
+func (userDeviceRepo *UserDeviceRepo) UpdateUserDeviceStatus(userDeviceQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error) {
+
+	var resultList *[]models.UserDeviceOut
+	query := "update user_device_info set status = ?  where id is not null "
+	queryParamArray := []interface{}{}
+	queryParamArray = append(queryParamArray, userDeviceQuery.Status)
+	if userDeviceQuery.Id > 0 {
+		query += " and id = ? "
+		queryParamArray = append(queryParamArray, userDeviceQuery.Id)
+	}
+	if userDeviceQuery.UserId > 0 {
+		query += " and user_id = ? "
+		queryParamArray = append(queryParamArray, userDeviceQuery.UserId)
+	}
+	if userDeviceQuery.DeviceId != "" {
+		query += " and device_id = ? "
+		queryParamArray = append(queryParamArray, userDeviceQuery.DeviceId)
+	}
+	query += " RETURNING id "
+	userDeviceRepo.db.GetInstance().Raw(query, queryParamArray...).Scan(&resultList)
+	return resultList, nil
 }
 
 func (userDeviceRepo *UserDeviceRepo) GetUserDevice(userDeviceQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error) {

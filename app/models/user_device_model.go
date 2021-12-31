@@ -3,39 +3,31 @@ package models
 import "time"
 
 type UserDevice struct {
-	Id            int `gorm:"primaryKey;column:id"`
-	AppType       int `binding:"required"`
-	AppVersion    string
-	AppVersionNum int    `binding:"required"`
-	DeviceType    int    `binding:"required"`
-	DeviceId      string `binding:"required"`
-	DeviceToken   string
-	Status        int `gorm:"default:1"`
-	UserId        int
+	Id            int    `json:"id" gorm:"primaryKey;column:id"`
+	AppType       int    `json:"appType" binding:"required"`
+	AppVersion    string `json:"appVersion"`
+	AppVersionNum int    `json:"appVersionNum" binding:"required"`
+	DeviceType    int    `json:"deviceType" binding:"required"`
+	DeviceId      string `json:"deviceId" binding:"required"`
+	DeviceToken   string `json:"deviceToken"`
+	Status        int    `gorm:"default:1"`
+	UserId        int    `json:"userId"`
 }
 
 type UserDeviceOut struct {
-	Id            int `gorm:"primaryKey;column:id"`
-	AppType       int
-	AppVersion    string
-	AppVersionNum int
-	DeviceType    int
-	DeviceId      string
-	DeviceToken   string
-	Status        int
-	UserId        int
-	CreatedOn     time.Time
-	UpdatedOn     time.Time
+	UserDevice
+	CreatedOn time.Time `json:"createdOn"`
+	UpdatedOn time.Time `json:"updatedOn"`
 }
 
 type UserDeviceQuery struct {
 	Id            int    `json:"id" gorm:"primaryKey;column:id"`
-	AppType       int    `json:"app_type" form:"app_type,default=-1"`
-	DeviceType    int    `json:"device_type" form:"device_type,default=-1"`
-	DeviceId      string `json:"device_id" form:"device_id"`
-	DeviceToken   string `json:"device_token" form:"device_token"`
-	UserId        int    `json:"user_id" form:"user_id,default=-1"`
-	AppVersionNum int    `json:"app_version_num" form:"app_version_num,default=-1"`
+	AppType       int    `json:"appType" form:"appType,default=-1"`
+	DeviceType    int    `json:"deviceType" form:"deviceType,default=-1"`
+	DeviceId      string `json:"deviceId" form:"deviceId"`
+	DeviceToken   string `json:"deviceToken" form:"deviceToken"`
+	UserId        int    `json:"userId" form:"userId,default=-1"`
+	AppVersionNum int    `json:"appVersionNum" form:"appVersionNum,default=-1"`
 	Status        int    `json:"status" form:"status,default=-1"`
 	Start         int    `json:"start" form:"start,default=-1"`
 	Size          int    `json:"size" form:"size,default=-1"`

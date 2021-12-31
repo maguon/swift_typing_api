@@ -3,26 +3,19 @@ package models
 import "time"
 
 type TWordInfo struct {
-	Id      int `gorm:"primaryKey;column:id"`
-	Word    string
-	Spell   string
-	Explain string
-	Example string
-	Refere  string
-	Level   int
-	Status  int
+	Id      int    `json:"id" gorm:"primaryKey;column:id"`
+	Word    string `json:"word" `
+	Spell   string `json:"spell" `
+	Explain string `json:"explain" `
+	Example string `json:"example" `
+	Refere  string `json:"refere" `
+	Level   int    `json:"level" `
+	Status  int    `json:"status" `
 }
 type TWordInfoOut struct {
-	Id        int `gorm:"primaryKey;column:id"`
-	Word      string
-	Spell     string
-	Explain   string
-	Example   string
-	Refere    string
-	Level     int
-	Status    int
-	CreatedOn time.Time
-	UpdatedOn time.Time
+	TWordInfo
+	CreatedOn time.Time `json:"createdOn" `
+	UpdatedOn time.Time `json:"updatedOn" `
 }
 type TWordQuery struct {
 	Id     int `json:"id" gorm:"primaryKey;column:id"`

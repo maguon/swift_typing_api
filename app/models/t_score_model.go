@@ -3,27 +3,20 @@ package models
 import "time"
 
 type TScoreInfo struct {
-	Id        int `gorm:"primaryKey;column:id"`
-	UserId    int
-	Correct   int
-	Incorrect int
-	Score     float32
-	ScoreType int
-	Level     int
-	Status    int
+	Id        int     `json:"id" gorm:"primaryKey;column:id"`
+	UserId    int     `json:"userId" `
+	Correct   int     `json:"correct" `
+	Incorrect int     `json:"incorrect" `
+	Score     float32 `json:"score" `
+	ScoreType int     `json:"scoreType" `
+	Level     int     `json:"level" `
+	Status    int     `json:"status" `
 }
 type TScoreInfoOut struct {
-	Id        int `gorm:"primaryKey;column:id"`
-	RowId     int
-	UserId    int
-	Correct   int
-	Incorrect int
-	Score     float32
-	ScoreType int
-	Level     int
-	Status    int
-	CreatedOn time.Time
-	UpdatedOn time.Time
+	TScoreInfo
+	RowId     int       `json:"rowId" `
+	CreatedOn time.Time `json:"createdOn" `
+	UpdatedOn time.Time `json:"updatedOn" `
 }
 type TScoreQuery struct {
 	Id        int `json:"id" gorm:"primaryKey;column:id"`

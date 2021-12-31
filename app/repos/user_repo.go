@@ -1,7 +1,6 @@
 package repos
 
 import (
-	"fmt"
 	"swift_typing_api/app/dbs"
 	"swift_typing_api/app/models"
 )
@@ -61,7 +60,6 @@ func (userRepo *UserRepo) GetUser(userQuery *models.UserQuery) (*[]models.UserIn
 		query += "offset ?  limit ? "
 		queryParamArray = append(queryParamArray, userQuery.Start, userQuery.Size)
 	}
-	fmt.Println(query)
 	userRepo.db.GetInstance().Raw(query, queryParamArray...).Scan(&userInfoList)
 	return userInfoList, nil
 }

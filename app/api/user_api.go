@@ -14,12 +14,13 @@ import (
 )
 
 type UserApi struct {
-	repo repos.IUserRepo
-	auth repos.IAuthRepo
+	repo   repos.IUserRepo
+	auth   repos.IAuthRepo
+	device repos.IUserDeviceRepo
 }
 
-func NewUserAPI(repo repos.IUserRepo, auth repos.IAuthRepo) *UserApi {
-	return &UserApi{repo: repo, auth: auth}
+func NewUserAPI(repo repos.IUserRepo, auth repos.IAuthRepo, device repos.IUserDeviceRepo) *UserApi {
+	return &UserApi{repo: repo, auth: auth, device: device}
 }
 
 // @BasePath /open
@@ -182,6 +183,7 @@ func (userApi *UserApi) ChangPassword(c *gin.Context) {
 // @Description userLogout
 // @Tags User
 // @Accept json
+// @Param userDeviceInfo body models.UserDeviceQuery true  "user device id required "
 // @Produce json
 // @Success 200 {json} models.AccessToken
 // @Security ApiKeyAuth
@@ -199,8 +201,28 @@ func (userApi *UserApi) Logout(c *gin.Context) {
 		util.InternalServerResponse(c)
 		return
 	}
-	userApi.auth.Remove(keys...)
-	util.SuccessUpdateResponse(c, len(keys))
+	if len(keys) > 0 {
+		userApi.auth.Remove(keys...)
+
+	}
+	var deviceQuery models.UserDeviceQuery
+	if err := c.ShouldBindJSON(&deviceQuery); err != nil {
+		util.SuccessUpdateResponse(c, 1)
+		return
+	}
+
+	userId := c.GetInt("_user_id")
+	if deviceQuery.DeviceId != "" && userId > -1 {
+		deviceQuery.UserId = userId
+		deviceQuery.Status = 0
+		resultList, err := userApi.device.UpdateUserDeviceStatus(&deviceQuery)
+		if err != nil {
+			common.GetLogger().Error(err)
+		} else {
+			common.GetLogger().Info(resultList)
+		}
+	}
+	util.SuccessUpdateResponse(c, 1)
 }
 
 // @BasePath /auth
@@ -223,8 +245,8 @@ func (userApi *UserApi) Logout(c *gin.Context) {
 func (userApi *UserApi) GetUserInfo(c *gin.Context) {
 	var userQuery models.UserQuery
 	//get validate token in request context
-	userId, _ := c.Get("_userId")
-	fmt.Println("_userId ", userId)
+	userId, _ := c.Get("_user_id")
+	fmt.Println("token_userId ", userId)
 	c.ShouldBindQuery(&userQuery)
 	common.GetLogger().Info(userQuery)
 	userOutList, err := userApi.repo.GetUser(&userQuery)
