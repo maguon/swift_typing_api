@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"fmt"
 	"swift_typing_api/app/dbs"
 	"swift_typing_api/app/models"
 )
@@ -48,6 +49,7 @@ func (userDeviceRepo *UserDeviceRepo) UpdateUserDeviceStatus(userDeviceQuery *mo
 		queryParamArray = append(queryParamArray, userDeviceQuery.DeviceId)
 	}
 	query += " RETURNING id "
+	fmt.Println(query)
 	userDeviceRepo.db.GetInstance().Raw(query, queryParamArray...).Scan(&resultList)
 	return resultList, nil
 }
