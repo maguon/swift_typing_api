@@ -213,7 +213,7 @@ func (userApi *UserApi) ChangPassword(c *gin.Context) {
 // @Router /auth/logout [post]
 func (userApi *UserApi) Logout(c *gin.Context) {
 	accessToken := c.Request.Header["Auth-Token"]
-	if len(accessToken[0]) < 150 {
+	if accessToken == nil || len(accessToken[0]) < 150 {
 		common.GetLogger().Error("accessToken Error")
 		util.InvalidParamsReponse(c)
 		return

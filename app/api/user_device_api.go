@@ -65,6 +65,7 @@ func (userDeviceApi *UserDeviceApi) AddUserDevice(c *gin.Context) {
 	}
 	userDeviceQuery := models.UserDeviceQuery{
 		DeviceId: userDevice.DeviceId,
+		UserId:   userDevice.UserId,
 		Status:   1,
 	}
 	userDeviceList, err := userDeviceApi.repo.GetUserDevice(&userDeviceQuery)
@@ -82,8 +83,9 @@ func (userDeviceApi *UserDeviceApi) AddUserDevice(c *gin.Context) {
 			return
 		}
 		util.SuccessResponse(c, userDeviceId)
-	} else if len(*userDeviceList) > 0 && (*userDeviceList)[0].UserId != userDevice.UserId {
-		userDeviceId, err := userDeviceApi.repo.AddUserDevice(&userDevice)
+	} else if len(*userDeviceList) > 0 {
+		userDevice.Id = (*userDeviceList)[0].Id
+		userDeviceId, err := userDeviceApi.repo.UpdateUserDevice(&userDevice)
 		if err != nil {
 			common.GetLogger().Error(err)
 			util.InternalServerResponse(c)

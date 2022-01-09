@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"fmt"
 	"swift_typing_api/app/dbs"
 	"swift_typing_api/app/models"
 )
@@ -8,6 +9,7 @@ import (
 type IUserDeviceRepo interface {
 	AddUserDevice(appInfo *models.UserDevice) (int, error)
 	GetUserDevice(appQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error)
+	UpdateUserDevice(userDeviceInfo *models.UserDevice) (int, error)
 	UpdateUserDeviceStatus(userDeviceQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error)
 }
 
@@ -23,6 +25,11 @@ func (userDeviceRepo *UserDeviceRepo) AddUserDevice(userDeviceInfo *models.UserD
 	result := userDeviceRepo.db.GetInstance().Table("user_device_info").Create(&userDeviceInfo)
 	return userDeviceInfo.Id, result.Error
 }
+func (userDeviceRepo *UserDeviceRepo) UpdateUserDevice(userDeviceInfo *models.UserDevice) (int, error) {
+	result := userDeviceRepo.db.GetInstance().Table("user_device_info").Updates(&userDeviceInfo)
+	return int(result.RowsAffected), result.Error
+}
+
 func (userDeviceRepo *UserDeviceRepo) UpdateUserDeviceStatus(userDeviceQuery *models.UserDeviceQuery) (*[]models.UserDeviceOut, error) {
 
 	var resultList *[]models.UserDeviceOut
@@ -42,6 +49,7 @@ func (userDeviceRepo *UserDeviceRepo) UpdateUserDeviceStatus(userDeviceQuery *mo
 		queryParamArray = append(queryParamArray, userDeviceQuery.DeviceId)
 	}
 	query += " RETURNING id "
+	fmt.Println(query)
 	userDeviceRepo.db.GetInstance().Raw(query, queryParamArray...).Scan(&resultList)
 	return resultList, nil
 }
