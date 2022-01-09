@@ -10,7 +10,8 @@ type UserInfo struct {
 	Phone    string `json:"phone" `
 	Gender   int    `json:"gender" `
 	Type     int    `json:"type" `
-	Status   int    `json:"status" `
+	Status   int    `json:"status"`
+	Captcha  string `json:"captcha" `
 }
 
 type UserInfoOut struct {

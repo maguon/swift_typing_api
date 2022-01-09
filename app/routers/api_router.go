@@ -38,6 +38,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 		openPath := r.Group("/open")
 		{
 			openPath.POST("/register", userAPI.AddUser)
+			openPath.POST("/phone/:phone/regSms", userAPI.SendRegSms)
+			openPath.POST("/phone/:phone/passwordSms", userAPI.SendPasswordSms)
 			openPath.POST("/userDevice", userDeviceAPI.AddUserDevice)
 			openPath.POST("/login", userAPI.Login)
 			openPath.GET("/app", appAPI.GetAppInfo)

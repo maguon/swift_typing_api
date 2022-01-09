@@ -23,3 +23,14 @@ redis:
   port: 6379
   password:
   database: 0
+
+sms:
+  action: SMS/TemplateSMS
+  type: Accounts
+  account_sid: 8aaf07085e6037fd015e6e6eb5
+  account_token: 8f987b4902314ad38024c4b0
+  app_sid: 8aaf07085e6037fd015e6e74ae
+  app_token: 8970618228fd7233d818a327
+  id: 2015
+  server: app.cloopen.com
+  port: 8883

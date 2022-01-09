@@ -22,7 +22,7 @@ func NewUserRepo(db dbs.IDatabase) IUserRepo {
 }
 
 func (userRepo *UserRepo) AddUser(userInfo *models.UserInfo) (int, error) {
-	result := userRepo.db.GetInstance().Table("user_info").Create(&userInfo)
+	result := userRepo.db.GetInstance().Table("user_info").Omit("Captcha").Create(&userInfo)
 	return userInfo.UserId, result.Error
 }
 

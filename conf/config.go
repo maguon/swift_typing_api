@@ -35,6 +35,18 @@ type Schema struct {
 		Password string `mapstructure:"password"`
 		Database int    `mapstructure:"database"`
 	} `mapstructure:"redis"`
+
+	Sms struct {
+		Action       string `mapstructure:"action"`
+		Type         string `mapstructure:"type"`
+		AccountSID   string `mapstructure:"account_sid"`
+		AccountToken string `mapstructure:"account_token"`
+		AppSID       string `mapstructure:"app_sid"`
+		AppToken     string `mapstructure:"app_token"`
+		Id           int    `mapstructure:"id"`
+		Server       string `mapstructure:"server"`
+		Port         int    `mapstructure:"port"`
+	}
 }
 
 var Config Schema

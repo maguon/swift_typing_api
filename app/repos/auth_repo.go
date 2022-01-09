@@ -14,6 +14,8 @@ type IAuthRepo interface {
 	Get(key string, authInfo *models.AuthInfo) error
 	GetKeys(keyStart string, keyEnd string) ([]string, error)
 	Remove(key ...string) error
+	SetCaptcha(key string, captcha string) error
+	GetCaptcha(key string) (string, error)
 }
 
 type AuthRepo struct {
@@ -47,4 +49,16 @@ func (authRepo *AuthRepo) GetKeys(keyStart string, keyEnd string) ([]string, err
 	key := fmt.Sprintf("*%s%s*", keyStart, keyEnd)
 	keys, err := authRepo.gredis.Keys(key)
 	return keys, err
+}
+
+func (authRepo *AuthRepo) SetCaptcha(key string, captcha string) error {
+	//key = strconv.Itoa(authInfo.UserId) + prefix + key
+	captchaBytes := []byte(captcha)
+	err := authRepo.gredis.SetCaptcha(key, captchaBytes)
+	return err
+}
+
+func (authRepo *AuthRepo) GetCaptcha(key string) (string, error) {
+	captcha, err := authRepo.gredis.GetCaptcha(key)
+	return captcha, err
 }

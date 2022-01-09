@@ -46,7 +46,6 @@ func main() {
 			common.GetLogger().Fatalf("Error: %s\n", err)
 		}
 	}()
-
 	quit := make(chan os.Signal)
 	// kill (no param) default send syscanll.SIGTERM
 	// kill -2 is syscall.SIGINT

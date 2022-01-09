@@ -3,12 +3,14 @@ package api
 import (
 	"crypto/md5"
 	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
 	"swift_typing_api/app/models"
 	"swift_typing_api/app/repos"
 	"swift_typing_api/common"
 	"swift_typing_api/util"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,21 +42,44 @@ func (userApi *UserApi) AddUser(c *gin.Context) {
 		util.InvalidParamsReponse(c)
 		return
 	}
-	passwordStr := fmt.Sprintf("%x", md5.Sum([]byte(userInfo.Password)))
-	userInfo.Password = strings.ToUpper(passwordStr)
-	userId, err := userApi.repo.AddUser(&userInfo)
+	captcha, _ := userApi.auth.GetCaptcha(userInfo.Phone)
+	if captcha != userInfo.Captcha {
+		fmt.Println("capcha error")
+		util.InvalidParamsReponse(c)
+		return
+	}
+	paramsMap := make(map[string]interface{})
+	paramsMap["phone"] = userInfo.Phone
+	userInfoArray, err := userApi.repo.GetUserFullInfo(paramsMap)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
 		return
 	}
-	accessToken, _ := util.GenerateAccess(userId)
-	userToken := models.UserToken{
-		UserId:      userId,
-		UserType:    userInfo.Type,
-		AccessToken: accessToken,
+
+	if userInfoArray == nil {
+		passwordStr := fmt.Sprintf("%x", md5.Sum([]byte(userInfo.Password)))
+		userInfo.Password = strings.ToUpper(passwordStr)
+		userInfo.Status = 1
+		userId, err := userApi.repo.AddUser(&userInfo)
+		if err != nil {
+			common.GetLogger().Error(err)
+			util.InternalServerResponse(c)
+			return
+		}
+		accessToken, _ := util.GenerateAccess(userId)
+		userToken := models.UserToken{
+			UserId:      userId,
+			UserType:    userInfo.Type,
+			AccessToken: accessToken,
+		}
+		util.SuccessResponse(c, userToken)
+	} else {
+		common.GetLogger().Warn("user has been registerd")
+		util.ErrorExistEmailResponse(c)
+		return
 	}
-	util.SuccessResponse(c, userToken)
+
 }
 
 // @BasePath /open
@@ -172,9 +197,7 @@ func (userApi *UserApi) ChangPassword(c *gin.Context) {
 			common.GetLogger().Warn("change password failed by invalid password %s", (*userInfoArray)[0].Phone)
 			util.FailedResponse(c, "change password by invalid password ", nil)
 		}
-
 	}
-
 }
 
 // @BasePath /auth
@@ -339,4 +362,83 @@ func (userApi *UserApi) ChangeToken(c *gin.Context) {
 
 	}
 
+}
+
+// @BasePath /open
+// @Summary  send register sms
+// @Schemes
+// @Description SendRegSms
+// @Tags User
+// @Accept json
+// @Param userDeviceInfo body models.UserInfo false  "user info "
+// @Param phone path int true "user unique phone"
+// @Produce json
+// @Success 200 {json} models.AccessToken
+// @Security ApiKeyAuth
+// @Router /open/phone/{phone}/regSms [post]
+func (userApi *UserApi) SendRegSms(c *gin.Context) {
+	phone := c.Param("phone")
+	userQuery := models.UserQuery{Phone: phone, Gender: -1, Status: -1, Type: -1}
+	userInfoList, err := userApi.repo.GetUser(&userQuery)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+	if userInfoList != nil && len(*userInfoList) > 0 {
+
+		util.ErrorExistEmailResponse(c)
+	} else {
+		captcha := fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
+		err := userApi.auth.SetCaptcha(phone, captcha)
+		if err != nil {
+			common.GetLogger().Error("Save captcha error ", err)
+		}
+		smsSendFlag := util.SendCaptchaSms(phone, captcha)
+		if smsSendFlag {
+			util.SuccessResponse(c, true)
+		} else {
+			util.FailedResponse(c, "短信发送失败", false)
+		}
+	}
+
+}
+
+// @BasePath /open
+// @Summary  send password sms
+// @Schemes
+// @Description SendPasswordSms
+// @Tags User
+// @Accept json
+// @Param userDeviceInfo body models.UserInfo false  "user info "
+// @Param phone path int true "user unique phone"
+// @Produce json
+// @Success 200 {json} models.AccessToken
+// @Security ApiKeyAuth
+// @Router /open/phone/{phone}/passwordSms [post]
+func (userApi *UserApi) SendPasswordSms(c *gin.Context) {
+	phone := c.Param("phone")
+	userQuery := models.UserQuery{Phone: phone, Gender: -1, Status: -1, Type: -1}
+	userInfoList, err := userApi.repo.GetUser(&userQuery)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+	if userInfoList == nil {
+		util.ErrorAuthTokenReponse(c)
+		return
+	} else {
+		captcha := fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
+		err := userApi.auth.SetCaptcha(phone, captcha)
+		if err != nil {
+			common.GetLogger().Error("Save captcha error ", err)
+		}
+		smsSendFlag := util.SendCaptchaSms(phone, captcha)
+		if smsSendFlag {
+			util.SuccessResponse(c, true)
+		} else {
+			util.FailedResponse(c, "短信发送失败", false)
+		}
+	}
 }

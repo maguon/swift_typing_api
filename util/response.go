@@ -4,21 +4,33 @@ import "github.com/gin-gonic/gin"
 
 func InvalidParamsReponse(c *gin.Context) {
 	c.JSON(int(InvalidParams), gin.H{
-		"success": true,
+		"success": false,
 		"msg":     GetMsg(int(InvalidParams)),
 	})
 	//c.Abort()
 }
+func ErrorExistEmailResponse(c *gin.Context) {
+	c.JSON(int(ErrorExistEmail), gin.H{
+		"success": false,
+		"msg":     GetMsg(int(ErrorExistEmail)),
+	})
+}
+func ErrorNotExistUserReponse(c *gin.Context) {
+	c.JSON(int(ErrorNotExistUser), gin.H{
+		"success": false,
+		"msg":     GetMsg(int(ErrorNotExistUser)),
+	})
+}
 func ErrorAuthTokenReponse(c *gin.Context) {
 	c.JSON(int(ErrorAuthToken), gin.H{
-		"success": true,
+		"success": false,
 		"msg":     GetMsg(int(ErrorAuthToken)),
 	})
 }
 
 func InternalServerResponse(c *gin.Context) {
 	c.JSON(int(ErrorInternalServer), gin.H{
-		"success": true,
+		"success": false,
 		"msg":     GetMsg(int(ErrorInternalServer)),
 	})
 	//c.Abort()

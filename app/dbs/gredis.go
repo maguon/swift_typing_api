@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	RedisExpiredTimes = 7200
+	RedisExpiredTimes   = 7200
+	CaptchaExpiredTimes = 900
 )
 
 var ctx = context.Background()
@@ -20,8 +21,10 @@ var ctx = context.Background()
 type IRedis interface {
 	IsConnected() bool
 	Get(key string, data interface{}) error
+	GetCaptcha(key string) (string, error)
 	Expire(key string) error
 	Set(key string, val []byte) error
+	SetCaptcha(key string, val []byte) error
 	Remove(keys ...string) error
 	Keys(pattern string) ([]string, error)
 }
@@ -82,6 +85,17 @@ func (g *GRedis) Get(key string, data interface{}) error {
 
 	return nil
 }
+
+func (g *GRedis) GetCaptcha(key string) (string, error) {
+	val, err := g.client.Get(ctx, key).Bytes()
+
+	if err != nil {
+		common.GetLogger().Info("Cache fail to get: ", err)
+		return "", err
+	}
+	common.GetLogger().Debug("Get from redis %s - %s", key, string(val))
+	return string(val), nil
+}
 func (g *GRedis) Expire(key string) error {
 	err := g.client.Expire(ctx, key, time.Duration(g.expiryTime)*time.Second).Err()
 	if err != nil {
@@ -99,6 +113,17 @@ func (g *GRedis) Set(key string, val []byte) error {
 		return err
 	}
 	common.GetLogger().Debugf("Set to redis %s - %s", key, val)
+
+	return nil
+}
+
+func (g *GRedis) SetCaptcha(key string, val []byte) error {
+	err := g.client.Set(ctx, key, val, time.Duration(CaptchaExpiredTimes)*time.Second).Err()
+	if err != nil {
+		common.GetLogger().Info("Cache fail to set captcha: ", err)
+		return err
+	}
+	common.GetLogger().Debugf("Set captcha to redis %s - %s", key, val)
 
 	return nil
 }
