@@ -279,6 +279,7 @@ func (tAllApi *TAllApi) SaveTScore(c *gin.Context) {
 		paramsMap["id"] = (*tScoreList)[0].Id
 		paramsMap["score"] = tScoreInfo.Score
 		tAllApi.tRepo.UpdateTScore(paramsMap)
+		util.SuccessResponse(c, (*tScoreList)[0].Id)
 	} else {
 		util.SuccessResponse(c, (*tScoreList)[0].Id)
 	}
