@@ -46,6 +46,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 			openPath.GET("/poem", tAllAPI.GetTPoemInfo)
 			openPath.GET("/word", tAllAPI.GetTWordInfo)
 			openPath.GET("/score", tAllAPI.GetTScoreInfo)
+			openPath.GET("/sentence", tAllAPI.GetTSentenceInfo)
+			openPath.GET("/article", tAllAPI.GetTArticleInfo)
 			/* openPath.GET("/users/:id", func(c *gin.Context) {
 				c.JSON(200, gin.H{
 					"message": "pong",
@@ -57,6 +59,8 @@ func RegisterAPI(r *gin.Engine, container *dig.Container) error {
 			adminPath.POST("/app", appAPI.AddApp)
 			adminPath.POST("/poem", tAllAPI.AddTPoem)
 			adminPath.POST("/word", tAllAPI.AddTWord)
+			adminPath.POST("/article", tAllAPI.AddTArticle)
+			adminPath.POST("/sentence", tAllAPI.AddTSentence)
 			adminPath.PUT("/app/:appId", appAPI.UpdateApp)
 			adminPath.GET("/userDevice", userDeviceAPI.GetUserDevice)
 		}

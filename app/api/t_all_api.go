@@ -11,13 +11,11 @@ import (
 )
 
 type TAllApi struct {
-	wordRepo  repos.ITWordRepo
-	poemRepo  repos.ITPoemRepo
-	scoreRepo repos.ITScoreRepo
+	tRepo repos.ITAllRepo
 }
 
-func NewTAllAPI(wordRepo repos.ITWordRepo, poemRepo repos.ITPoemRepo, scoreRepo repos.ITScoreRepo) *TAllApi {
-	return &TAllApi{wordRepo: wordRepo, poemRepo: poemRepo, scoreRepo: scoreRepo}
+func NewTAllAPI(tRepo repos.ITAllRepo) *TAllApi {
+	return &TAllApi{tRepo: tRepo}
 }
 
 // @BasePath /open
@@ -38,7 +36,7 @@ func (tAllApi *TAllApi) GetTPoemInfo(c *gin.Context) {
 	var tPoemQuery models.TPoemQuery
 
 	c.ShouldBindQuery(&tPoemQuery)
-	appList, err := tAllApi.poemRepo.GetTPoem(&tPoemQuery)
+	appList, err := tAllApi.tRepo.GetTPoem(&tPoemQuery)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
@@ -65,7 +63,7 @@ func (tAllApi *TAllApi) AddTPoem(c *gin.Context) {
 		util.InvalidParamsReponse(c)
 		return
 	}
-	tPomeId, err := tAllApi.poemRepo.AddTPoem(&tPomeInfo)
+	tPomeId, err := tAllApi.tRepo.AddTPoem(&tPomeInfo)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
@@ -93,7 +91,7 @@ func (tAllApi *TAllApi) GetTWordInfo(c *gin.Context) {
 	var tWordQuery models.TWordQuery
 
 	c.ShouldBindQuery(&tWordQuery)
-	resultList, err := tAllApi.wordRepo.GetTWord(&tWordQuery)
+	resultList, err := tAllApi.tRepo.GetTWord(&tWordQuery)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
@@ -120,7 +118,7 @@ func (tAllApi *TAllApi) AddTWord(c *gin.Context) {
 		util.InvalidParamsReponse(c)
 		return
 	}
-	tWordId, err := tAllApi.wordRepo.AddTWord(&tWordInfo)
+	tWordId, err := tAllApi.tRepo.AddTWord(&tWordInfo)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
@@ -128,6 +126,114 @@ func (tAllApi *TAllApi) AddTWord(c *gin.Context) {
 	}
 
 	util.SuccessResponse(c, tWordId)
+}
+
+// @BasePath /admin
+// @Summary add TSentence info
+// @Schemes
+// @Description AddTSentence
+// @Tags T
+// @Accept json
+// @Param appinfo body models.TSentenceInfo true  "word info "
+// @Produce json
+// @Success 200 {json} int
+// @Security ApiKeyAuth
+// @Router /admin/sentence [post]
+func (tAllApi *TAllApi) AddTSentence(c *gin.Context) {
+	var tInfo models.TSentenceInfo
+	if err := c.ShouldBindJSON(&tInfo); err != nil {
+		common.GetLogger().Error(err)
+		util.InvalidParamsReponse(c)
+		return
+	}
+	tId, err := tAllApi.tRepo.AddTSentence(&tInfo)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+
+	util.SuccessResponse(c, tId)
+}
+
+// @BasePath /open
+// @Summary Get TSentence List
+// @Schemes
+// @Description GetTSentenceInfo
+// @Tags T
+// @Accept json
+// @Param id query int false "Sentence ID"
+// @Param status query int false "sentence status"
+// @Param start query int false "Offset"
+// @Param size query int false "Limit"
+// @Produce json
+// @Success 200 {string} models.TSentenceInfoOut
+// @Router /open/sentence [get]
+func (tAllApi *TAllApi) GetTSentenceInfo(c *gin.Context) {
+	var tQuery models.TSentenceQuery
+
+	c.ShouldBindQuery(&tQuery)
+	resultList, err := tAllApi.tRepo.GetTSentence(&tQuery)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+	util.SuccessResponse(c, resultList)
+}
+
+// @BasePath /admin
+// @Summary add TArticle info
+// @Schemes
+// @Description AddTArticle
+// @Tags T
+// @Accept json
+// @Param appinfo body models.TArticleInfo true  "word info "
+// @Produce json
+// @Success 200 {json} int
+// @Security ApiKeyAuth
+// @Router /admin/article [post]
+func (tAllApi *TAllApi) AddTArticle(c *gin.Context) {
+	var tInfo models.TArticleInfo
+	if err := c.ShouldBindJSON(&tInfo); err != nil {
+		common.GetLogger().Error(err)
+		util.InvalidParamsReponse(c)
+		return
+	}
+	tId, err := tAllApi.tRepo.AddTArticle(&tInfo)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+
+	util.SuccessResponse(c, tId)
+}
+
+// @BasePath /open
+// @Summary Get TArticle List
+// @Schemes
+// @Description GetTArticleInfo
+// @Tags T
+// @Accept json
+// @Param id query int false "Article ID"
+// @Param status query int false "Article status"
+// @Param start query int false "Offset"
+// @Param size query int false "Limit"
+// @Produce json
+// @Success 200 {string} models.TArticleInfoOut
+// @Router /open/article [get]
+func (tAllApi *TAllApi) GetTArticleInfo(c *gin.Context) {
+	var tQuery models.TArticleQuery
+
+	c.ShouldBindQuery(&tQuery)
+	resultList, err := tAllApi.tRepo.GetTArticle(&tQuery)
+	if err != nil {
+		common.GetLogger().Error(err)
+		util.InternalServerResponse(c)
+		return
+	}
+	util.SuccessResponse(c, resultList)
 }
 
 // @BasePath /auth
@@ -153,14 +259,14 @@ func (tAllApi *TAllApi) SaveTScore(c *gin.Context) {
 		Level:     tScoreInfo.Level,
 		ScoreType: tScoreInfo.ScoreType,
 	}
-	tScoreList, err := tAllApi.scoreRepo.GetTScore(&tScoreQuery)
+	tScoreList, err := tAllApi.tRepo.GetTScore(&tScoreQuery)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
 		return
 	}
 	if tScoreList == nil || len(*tScoreList) < 1 {
-		tScoreId, err := tAllApi.scoreRepo.SaveTScore(&tScoreInfo)
+		tScoreId, err := tAllApi.tRepo.SaveTScore(&tScoreInfo)
 		if err != nil {
 			common.GetLogger().Error(err)
 			util.InternalServerResponse(c)
@@ -172,7 +278,7 @@ func (tAllApi *TAllApi) SaveTScore(c *gin.Context) {
 		paramsMap := make(map[string]interface{})
 		paramsMap["id"] = (*tScoreList)[0].Id
 		paramsMap["score"] = tScoreInfo.Score
-		tAllApi.scoreRepo.UpdateTScore(paramsMap)
+		tAllApi.tRepo.UpdateTScore(paramsMap)
 	} else {
 		util.SuccessResponse(c, (*tScoreList)[0].Id)
 	}
@@ -199,7 +305,7 @@ func (tAllApi *TAllApi) GetTScoreInfo(c *gin.Context) {
 	var tScoreQuery models.TScoreQuery
 
 	c.ShouldBindQuery(&tScoreQuery)
-	resultList, err := tAllApi.scoreRepo.GetTScore(&tScoreQuery)
+	resultList, err := tAllApi.tRepo.GetTScore(&tScoreQuery)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)
@@ -235,7 +341,7 @@ func (tAllApi *TAllApi) GetUserScoreRank(c *gin.Context) {
 		return
 	}
 	tScoreQuery.UserId = userIdInt
-	resultList, err := tAllApi.scoreRepo.GetTScore(&tScoreQuery)
+	resultList, err := tAllApi.tRepo.GetTScore(&tScoreQuery)
 	if err != nil {
 		common.GetLogger().Error(err)
 		util.InternalServerResponse(c)

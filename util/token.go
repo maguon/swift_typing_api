@@ -19,7 +19,7 @@ const defaultKey = "gin-go"
 
 var defaultOptions = options{
 	tokenType:     "Bearer",
-	expired:       7200,
+	expired:       720, //hours
 	signingMethod: jwt.SigningMethodHS256,
 	signingKey:    []byte(defaultKey),
 }
@@ -28,7 +28,7 @@ func GenerateAccess(userID int) (string, error) {
 	now := time.Now()
 	token := jwt.NewWithClaims(defaultOptions.signingMethod, jwt.StandardClaims{
 		IssuedAt:  now.Unix(),
-		ExpiresAt: now.Add(time.Duration(defaultOptions.expired) * time.Second).Unix(),
+		ExpiresAt: now.Add(time.Duration(defaultOptions.expired) * time.Hour).Unix(),
 		NotBefore: now.Unix(),
 		Id:        strconv.Itoa(userID),
 	})

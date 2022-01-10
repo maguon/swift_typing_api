@@ -10,8 +10,6 @@ func Inject(container *dig.Container) error {
 	_ = container.Provide(NewAuthRepo)
 	_ = container.Provide(NewUserDeviceRepo)
 	_ = container.Provide(NewUserRepo)
-	_ = container.Provide(NewTPoemRepo)
-	_ = container.Provide(NewTWordRepo)
-	_ = container.Provide(NewTScoreRepo)
+	_ = container.Provide(NewTAllRepo)
 	return nil
 }
