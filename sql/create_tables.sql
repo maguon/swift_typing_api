@@ -136,6 +136,37 @@ CREATE TABLE IF NOT EXISTS public.t_poem
 
 create trigger t_poem_upt before update on t_poem for each row execute procedure update_timestamp_func();
 
+--CREATE TABLE t_sentence
+CREATE TABLE IF NOT EXISTS public.t_sentence
+(
+    id bigserial NOT NULL,
+    created_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    status smallint NOT NULL DEFAULT 1,
+    author character varying(20) NOT NULL,
+    content character varying(300) ,
+    PRIMARY KEY (id)
+);
+
+create trigger t_sentence_upt before update on t_sentence for each row execute procedure update_timestamp_func();
+
+--CREATE TABLE t_article
+CREATE TABLE IF NOT EXISTS public.t_article
+(
+    id bigserial NOT NULL,
+    created_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    updated_on timestamp with time zone NOT NULL DEFAULT NOW(),
+    status smallint NOT NULL DEFAULT 1,
+    author character varying(20) NOT NULL,
+    title character varying(60) NOT NULL,
+    content character varying(3000) ,
+    refere character varying(100) ,
+    level smallint NOT NULL DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
+create trigger t_article_upt before update on t_article for each row execute procedure update_timestamp_func();
+
 --CREATE TABLE t_score
 CREATE TABLE IF NOT EXISTS public.t_score
 (
