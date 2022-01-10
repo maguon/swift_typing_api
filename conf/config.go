@@ -67,5 +67,5 @@ func init() {
 	if err != nil { // Handle errors reading the config file
 		panic(fmt.Errorf("fatal error config file: %s", err))
 	}
-	// fmt.Printf("Current Config: %+v", Config)
+	fmt.Printf("Current Config: %+v", Config)
 }
