@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <title>雨燕打字</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" lang="zh-CN" content="少儿键盘 打字练习 mac windows ubuntu">
+    <meta name="description" lang="zh-CN" content="雨燕打字 少儿键盘练习 打字练习">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Web Fonts -->
+
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <link rel="stylesheet" href="./assets/css/header-default.css">
+    <link rel="stylesheet" href="./assets/css/parallax-slider.css">
+
+    <!-- CSS Header and Footer -->
+</head>
+
+<body style="background-color: #2c2c32;">
+<div class="wrapper" style="background-color: #2c2c32;">
+    <!--=== Header ===-->
+    <div class="header" style="background-color: #2c2c32;border-bottom: solid 2px #000;">
+        <div class="container">
+            <!-- Logo -->
+            <a class="logo" href="/">
+                <img src="./assets/img/logo1-default.png" alt="Logo"><span>玉燕打字</span>
+            </a>
+            
+        </div><!--/end container-->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown active">&nbsp;</li>
+                </ul>
+            </div><!--/end container-->
+        </div><!--/navbar-collapse-->
+    </div>
+    <!--=== End Header ===-->
+    <div class="slider-inner" style="background-color: #2c2c32;">
+        <div id="da-slider" class="da-slider">
+            <div class="da-slide da-slide-current">
+                <h2><i>雨 燕 打 字</i> <br> <i>少儿打字练习</i></h2>
+                <h3></h3>
+                <p><i>英文单词速度练习</i> <br> <i>成语读音与示例</i> <br> <i>经典励志名言 </i><br> <i>唐诗名句练习 </i></p>
+                <div class="da-img">
+                    <!-- <iframe src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" width="530" height="300" frameborder="0" allow="autoplay"></iframe> -->
+                    <!-- <video id="video_player" muted class="img-responsive"  controls="false" autoplay="autoplay" loop="loop">
+                        <source src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"  type="video/ogg" />
+                    </video> -->
+                </div>                
+            </div>            
+        </div>
+    </div>
+   
+
+    <!--=== Content Part ===-->
+    <div class="container content-sm" >
+    	<!-- Service Blocks -->
+    	<div class="row margin-bottom-30">
+        	<div class="col-md-4">
+                <div class="download">
+                    <div class="logo_prod windows"></div>
+                    <button id="win_btn" onclick='{window.open("./swift_typing.exe")}' class="link-button dlink" aria-label="Windows download" role="link">
+                        <img class="download-icon" src="./assets/img/download.svg" width="18px" height="18px" alt="Download Win"/>
+                        Windows
+                        <small>Windows 7, 8, 10, 11</small>
+                    </button>
+                </div>
+        	</div>
+        	<div class="col-md-4">
+        		<div class="download">
+                    <div class="logo_prod linux"></div>
+                    <button id="linxu_btn"  onclick='{window.open("./swift_typing.deb")}' class="link-button dlink"  aria-label="Linux download" role="link">
+                        <img class="download-icon" src="./assets/img/download.svg" width="18px" height="18px" alt="Download Linxu"/>
+                        .deb
+                        <small>Debian, Ubuntu</small>
+                    </button>
+                </div>
+        	</div>
+        	<div class="col-md-4">
+        		<div class="download">
+                    <div class="logo_prod mac"></div>
+                    <button id="mac_btn" onclick='{window.open("./swift_typing.dmg")}' class="link-button dlink"  aria-label="MacOS download" role="link">
+                        <img class="download-icon" src="./assets/img/download.svg" width="18px" height="18px" alt="Download Mac"/>
+                        Mac
+                        <small>macOS 10.11+</small>
+                    </button>
+                </div>
+        	</div>
+    	</div>
+    	<!-- End Service Blokcs -->
+
+    	
+        </div>
+        <!-- End Owl Clients v1 -->
+    </div><!--/container-->
+    <!-- End Content Part -->
+
+    <!--=== Footer Version 1 ===-->
+    <div class="footer-v1">
+        
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p style="color: antiquewhite;">
+                            2021 &copy; All Rights Reserved.
+                           <a href="#">zoktop.com</a> | <a href="mailto:gulltop86@gmail.com">gulltop86@gmail.com</a>
+                        </p>
+                    </div>
+
+                    <!-- Social Links -->
+                    <div class="col-md-6">
+                        
+                    </div>
+                    <!-- End Social Links -->
+                </div>
+            </div>
+        </div><!--/copyright-->
+    </div>
+    <!--=== End Footer Version 1 ===-->
+</div><!--/wrapper-->
+
+<script>
+    window.onload=function(){
+        var vp = document.getElementById("video_player");
+        vp.addEventListener("canplay",()=>{
+            
+            vp.play();
+        })
+    }
+    /*
+     */
+    //;
+</script>
+</body>
+</html>
