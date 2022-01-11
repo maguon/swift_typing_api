@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+Sitemap: zoktop.com
+Sitemap: www.zoktop.com
