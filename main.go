@@ -58,13 +58,11 @@ func main() {
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
 		common.GetLogger().Fatal("Server Shutdown: ", err)
-
 	}
 	// catching ctx.Done(). timeout of 1 seconds.
 	select {
 	case <-ctx.Done():
 		common.GetLogger().Info("Timeout of 1 seconds.")
-
 	}
 	common.GetLogger().Info("Server exiting")
 }
